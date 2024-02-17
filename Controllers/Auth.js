@@ -59,7 +59,7 @@ exports.login = async (req,res) => {
         if(!email || !password) {
             return res.status(400).json({
                 success:false,
-                message:'PLease fill all the details carefully',
+                message:'Please fill all the details carefully',
             });
         }
 
@@ -94,7 +94,7 @@ exports.login = async (req,res) => {
             user.password = undefined;
 
             const options = {
-                expires: new Date( Date.now() + 3 * 24 * 60 * 60 * 1000),
+                expires: new Date( Date.now() + 3*24*60*60*1000),
                 httpOnly:true,
             }
 
@@ -104,6 +104,7 @@ exports.login = async (req,res) => {
                 user,
                 message:'User Logged in successfully',
             });
+            
         }
         else {
             //passwsord do not match

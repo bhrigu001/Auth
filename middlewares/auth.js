@@ -7,9 +7,13 @@ require("dotenv").config();
 exports.auth = (req,res, next) => {
     try{
         //extract JWT token
-        const token = req.body.token ;
+        console.log("cookie",req.cookies.token);
+        console.log("body",req.body.token);
+        console.log("Header", req.header("Authorization"));
 
-        if(!token) {
+        const token = req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer ","");
+
+        if(!token || token === undefined) {
             return res.status(401).json({
                 success:false,
                 message:'Token Missing',
@@ -34,6 +38,7 @@ exports.auth = (req,res, next) => {
         return res.status(401).json({
             success:false,
             message:'Something went wrong, while verifying the token',
+            error:error.message,
         });
     }
    
@@ -45,7 +50,7 @@ exports.isStudent = (req,res,next) => {
             if(req.user.role !== "Student") {
                 return res.status(401).json({
                     success:false,
-                    message:'THis is a protected route for students',
+                    message:'This is a protected route for students',
                 });
             }
             next();
